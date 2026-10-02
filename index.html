@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Horario Erasmus · PŁ 26/27 W</title>
+  <meta name="description" content="Horario semanal optimizado Erasmus – Politechnika Łódzka, semestre de invierno 2026/27." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M9 11h14M9 16h14M9 21h9' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <script>
+    try {
+      const t = localStorage.getItem('pl-theme');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+    } catch (e) {}
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'] } } }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --surface: #ffffff; --line: #e2e8f0; --line-soft: #f1f5f9; }
+    .dark { --surface: #0f172a; --line: #1e293b; --line-soft: #172033; }
+    body { font-feature-settings: 'cv11', 'ss01'; }
+    .ev {
+      background: color-mix(in srgb, var(--c) 13%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--c) 28%, var(--surface));
+      border-left: 4px solid var(--c);
+    }
+    .dark .ev { background: color-mix(in srgb, var(--c) 22%, var(--surface)); border-color: color-mix(in srgb, var(--c) 40%, var(--surface)); border-left-color: var(--c); }
+    .ev:hover { box-shadow: 0 8px 24px -8px color-mix(in srgb, var(--c) 55%, transparent); z-index: 30; }
+    .ev-title { color: color-mix(in srgb, var(--c) 70%, #0f172a); }
+    .dark .ev-title { color: color-mix(in srgb, var(--c) 55%, #ffffff); }
+    .ev.muted { opacity: .55; }
+    .ev.conflict { outline: 2px dashed #ef4444; outline-offset: 1px; }
+    .badge { background: var(--c); color: #fff; }
+    .dot { background: var(--c); }
+    .soft { background: color-mix(in srgb, var(--c) 14%, transparent); color: color-mix(in srgb, var(--c) 75%, #0f172a); }
+    .dark .soft { color: color-mix(in srgb, var(--c) 50%, #ffffff); }
+    .hour-lines { background-image: linear-gradient(to bottom, var(--line) 1px, transparent 1px); }
+    .half-lines { background-image: linear-gradient(to bottom, var(--line-soft) 1px, transparent 1px); }
+    .modal-enter { animation: modalIn .22s cubic-bezier(.2,.9,.3,1.2); }
+    .fade-enter { animation: fadeIn .2s ease-out; }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: none; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .scroll-thin::-webkit-scrollbar { height: 8px; width: 8px; }
+    .scroll-thin::-webkit-scrollbar-thumb { background: #94a3b855; border-radius: 99px; }
+    .toggle input:checked + span { background: var(--c); border-color: var(--c); }
+    .toggle input:checked + span svg { opacity: 1; }
+    select { background-image: none; }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-200">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/80">
+    <div class="mx-auto flex max-w-[1600px] items-center gap-3 px-4 py-3 lg:px-6">
+      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/30">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18" stroke-linecap="round"/></svg>
+      </div>
+      <div class="min-w-0 flex-1">
+        <h1 class="truncate text-base font-bold tracking-tight sm:text-lg">Horario Erasmus · Politechnika Łódzka</h1>
+        <p class="truncate text-xs text-slate-500 dark:text-slate-400">Semestre de invierno 2026/27 · 9 asignaturas · datos Celcat</p>
+      </div>
+      <div id="modeSwitchDesktop" class="hidden md:block"></div>
+      <button id="themeBtn" class="rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 shadow-sm transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Cambiar tema">
+        <svg class="h-5 w-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke-linejoin="round"/></svg>
+        <svg class="hidden h-5 w-5 dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/></svg>
+      </button>
+      <button id="drawerBtn" class="rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 shadow-sm transition hover:bg-slate-100 xl:hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Abrir filtros">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="mx-auto max-w-[1600px] gap-6 px-4 py-4 lg:px-6 xl:flex">
+    <!-- Sidebar / drawer -->
+    <div id="drawer" class="fixed inset-0 z-40 hidden xl:static xl:z-auto xl:block xl:w-80 xl:shrink-0">
+      <div id="drawerBackdrop" class="fade-enter absolute inset-0 bg-slate-900/40 backdrop-blur-sm xl:hidden"></div>
+      <aside class="scroll-thin absolute right-0 top-0 h-full w-[88%] max-w-sm space-y-4 overflow-y-auto bg-slate-50 p-4 shadow-2xl xl:sticky xl:top-[84px] xl:h-[calc(100vh-100px)] xl:w-auto xl:max-w-none xl:bg-transparent xl:p-0 xl:pr-1 xl:shadow-none dark:bg-slate-950 xl:dark:bg-transparent">
+        <div class="flex items-center justify-between xl:hidden">
+          <h2 class="text-sm font-semibold">Filtros y grupos</h2>
+          <button id="drawerClose" class="rounded-lg p-2 hover:bg-slate-200 dark:hover:bg-slate-800" aria-label="Cerrar">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-3 flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Asignaturas</h2>
+            <div class="flex gap-1 text-xs">
+              <button id="allSubjects" class="rounded-lg px-2 py-1 font-medium text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-500/10">Todas</button>
+              <button id="noSubjects" class="rounded-lg px-2 py-1 font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Ninguna</button>
+            </div>
+          </div>
+          <div id="subjectList" class="space-y-1"></div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <h2 class="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Filtros</h2>
+          <div id="typeFilter" class="mb-3 flex flex-wrap gap-1.5"></div>
+          <label class="relative block">
+            <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5" stroke-linecap="round"/></svg>
+            <input id="search" type="search" placeholder="Profesor, aula, edificio, grupo…" class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/15 dark:border-slate-700 dark:bg-slate-800" />
+          </label>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-1 flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Mis grupos</h2>
+            <span id="groupsBadge" class="text-[11px] text-slate-400"></span>
+          </div>
+          <p class="mb-3 text-xs text-slate-500 dark:text-slate-400">Un grupo por componente. Cámbialos a mano o recalcula el óptimo.</p>
+          <button id="reoptimize" class="mb-3 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-600/30 transition hover:bg-indigo-500 active:scale-[.98]">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" stroke-linejoin="round"/><path d="M19 17l.8 2.2L22 20l-2.2.8L19 23l-.8-2.2L16 20l2.2-.8z" stroke-linejoin="round"/></svg>
+            Recalcular horario óptimo
+          </button>
+          <p class="-mt-2 mb-3 text-[11px] text-slate-400">Usa solo las asignaturas marcadas arriba.</p>
+          <div id="groupPicker" class="space-y-3"></div>
+        </section>
+      </aside>
+    </div>
+
+    <!-- Main -->
+    <main class="min-w-0 flex-1 space-y-4">
+      <div class="md:hidden" id="modeSwitchMobile"></div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex items-center rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <button id="weekPrev" class="rounded-l-xl px-2.5 py-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Semana anterior">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <select id="weekSelect" class="max-w-[220px] cursor-pointer appearance-none border-x border-slate-200 bg-transparent px-3 py-2 text-sm font-medium outline-none dark:border-slate-800 dark:bg-slate-900"></select>
+          <button id="weekNext" class="rounded-r-xl px-2.5 py-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Semana siguiente">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <label id="oneOffWrap" class="flex cursor-pointer select-none items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <input id="oneOff" type="checkbox" class="h-4 w-4 rounded accent-indigo-600" />
+          <span>Sesiones puntuales</span>
+        </label>
+        <div id="stats" class="flex flex-wrap gap-2 md:ml-auto"></div>
+      </div>
+
+      <div id="alerts"></div>
+
+      <div id="gridView" class="hidden md:block"></div>
+      <div id="agendaView" class="md:hidden"></div>
+
+      <footer class="pb-6 pt-2 text-center text-xs text-slate-400">
+        Datos transcritos de Celcat (lodz.celcat.cloud) · El horario puede cambiar: compruébalo periódicamente en Celcat.
+      </footer>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-50 hidden items-end justify-center p-0 sm:items-center sm:p-4">
+    <div id="modalBackdrop" class="fade-enter absolute inset-0 bg-slate-900/50 backdrop-blur-md"></div>
+    <div id="modalCard" class="modal-enter scroll-thin relative max-h-[92vh] w-full overflow-y-auto rounded-t-3xl bg-white shadow-2xl sm:max-w-lg sm:rounded-3xl dark:bg-slate-900 dark:ring-1 dark:ring-slate-800"></div>
+  </div>
+
+<script>
+/* =====================================================================
+ * DATOS — transcritos de Celcat (Politechnika Łódzka, 26/27 W).
+ * Para modificar una clase basta con editar su objeto en EVENTS.
+ *  - day: 1 = lunes … 5 = viernes
+ *  - weeks: 18 caracteres, uno por semana del calendario a partir del
+ *    lunes SEMESTER.week1Monday ('1' = hay clase esa semana)
+ *  - note: texto libre de Celcat (p. ej. "odd weeks", "weeks 1-8", "group 1")
+ * ===================================================================== */
+const SEMESTER = { name: 'Winter Semester 2026/27', week1Monday: '2026-09-28', weeks: 18 };
+
+const SUBJECTS = {
+  PM:  { name: 'Project Management',                          short: 'PM',    color: '#d97706', celcat: 3464 },
+  SL:  { name: 'Scripting Languages',                         short: 'SL',    color: '#2563eb', celcat: 3533 },
+  HCI: { name: 'Human Computer Interaction',                  short: 'HCI',   color: '#e11d48', celcat: 3548 },
+  IOT: { name: 'Internet of Things',                          short: 'IoT',   color: '#059669', celcat: 3551 },
+  TSN: { name: 'Telecommunication Systems and Networks',      short: 'TSN',   color: '#7c3aed', celcat: 3568 },
+  NT:  { name: 'Network Technologies',                        short: 'NT',    color: '#0891b2', celcat: 3654 },
+  XML: { name: 'XML Technologies',                            short: 'XML',   color: '#65a30d', celcat: 3656 },
+  AI:  { name: 'Artificial Intelligence and Expert Systems',  short: 'AI&ES', color: '#ea580c', celcat: 3664 },
+  MOB: { name: 'Introduction to Mobile Systems',              short: 'Mobile',color: '#c026d3', celcat: 3761 },
+};
+
+const TYPES = {
+  Lecture:    { badge: 'TEORÍA',   label: 'Teoría (Lecture)' },
+  Laboratory: { badge: 'LAB',      label: 'Laboratorio' },
+  Project:    { badge: 'PROYECTO', label: 'Proyecto' },
+  Tutorial:   { badge: 'TUTORÍA',  label: 'Tutoría' },
+  EPS:        { badge: 'EPS',      label: 'European Project Semester', optional: true },
+};
+
+const EVENTS = [
+  // ── Project Management ──────────────────────────────────────────
+  { id: '23676', subject: 'PM', type: 'Lecture', groups: ['3BS - group 1', '3BS - group 2', '7BSTen', '7BSTfr'], day: 2, start: '18:30', end: '20:00', teachers: ['Paweł Pietras'], location: [{ building: 'On-line', room: '' }], note: 'weeks 1-8', weeks: '011111111000000000' },
+  { id: '23677', subject: 'PM', type: 'Tutorial', groups: ['3BS - group 1', '3BS - group 2'], day: 5, start: '12:15', end: '13:45', teachers: ['Agnieszka Pietras'], location: [{ building: 'C3', room: '607' }], note: '', weeks: '011111111111000111' },
+  { id: '24206', subject: 'PM', type: 'Tutorial', groups: ['7BSTen'], day: 5, start: '12:15', end: '13:45', teachers: ['Paweł Pietras'], location: [{ building: 'C3', room: '523' }], note: '', weeks: '111111111111000111' },
+  { id: '24207', subject: 'PM', type: 'Project', groups: ['7BSTen'], day: 5, start: '14:15', end: '15:45', teachers: ['Paweł Pietras'], location: [{ building: 'C3', room: '523' }], note: '', weeks: '111111111111000111' },
+  { id: '23912', subject: 'PM', type: 'EPS', groups: ['EPS (26/27 W)'], day: 5, start: '09:00', end: '14:00', teachers: ['George Anders'], location: [{ building: 'B18', room: 'A5' }], note: '', weeks: '011110011100000000' },
+
+  // ── Scripting Languages ─────────────────────────────────────────
+  { id: '22872', subject: 'SL', type: 'Laboratory', groups: ['1CSC - group 1'], day: 5, start: '08:15', end: '09:45', teachers: ['Paweł Plewiński'], location: [{ building: 'B18', room: 'lab.A' }], note: 'weeks 2-15', weeks: '011111111111000111' },
+  { id: '22875', subject: 'SL', type: 'Laboratory', groups: ['1CSC - group 2'], day: 5, start: '10:15', end: '11:45', teachers: ['Paweł Plewiński'], location: [{ building: 'B18', room: 'lab.A' }], note: 'weeks 2-15', weeks: '011111111111000111' },
+  { id: '23709', subject: 'SL', type: 'Laboratory', groups: ['1CSC - group 3'], day: 1, start: '12:15', end: '13:45', teachers: ['Witold Marańda'], location: [{ building: 'B18', room: 'lab.D' }], note: '', weeks: '011111011111100111' },
+  { id: '22874', subject: 'SL', type: 'Laboratory', groups: ['1CSC - group 4'], day: 1, start: '10:15', end: '11:45', teachers: ['Witold Marańda'], location: [{ building: 'B18', room: 'lab.D' }], note: '', weeks: '011111011111100111' },
+  { id: '23739', subject: 'SL', type: 'Laboratory', groups: ['1CSC - Erasmus'], day: 5, start: '12:15', end: '13:45', teachers: ['Paweł Plewiński'], location: [{ building: 'B18', room: 'lab.A' }], note: '', weeks: '011111111111000111' },
+  { id: '23822', subject: 'SL', type: 'Laboratory', groups: ['1CSC - Erasmus'], day: 1, start: '14:15', end: '15:45', teachers: ['Witold Marańda'], location: [{ building: 'B18', room: 'lab.B' }], note: '', weeks: '011111011111100111' },
+
+  // ── Human Computer Interaction ──────────────────────────────────
+  { id: '22925', subject: 'HCI', type: 'Project', groups: ['5CS - group 1'], day: 2, start: '14:15', end: '15:45', teachers: ['Franciszek Sobiech'], location: [{ building: 'B19/i24', room: '404' }], note: '', weeks: '011111111111000111' },
+  { id: '22926', subject: 'HCI', type: 'Project', groups: ['5CS - group 2'], day: 2, start: '16:15', end: '17:45', teachers: ['Franciszek Sobiech'], location: [{ building: 'B19/i24', room: '404' }], note: '', weeks: '011111111111000111' },
+  { id: '22927', subject: 'HCI', type: 'Project', groups: ['5CS - group 3'], day: 2, start: '18:15', end: '19:45', teachers: ['Franciszek Sobiech'], location: [{ building: 'B19/i24', room: '404' }], note: '', weeks: '011111111111000111' },
+  { id: '23855', subject: 'HCI', type: 'Project', groups: ['Sin grupo (prob. Erasmus)'], day: 2, start: '12:15', end: '13:45', teachers: ['Franciszek Sobiech'], location: [{ building: 'B19/i24', room: '404' }], note: 'Sin grupo asignado en Celcat', weeks: '011111111111100111' },
+
+  // ── Internet of Things ──────────────────────────────────────────
+  { id: '23733', subject: 'IOT', type: 'Lecture', groups: ['5CS - group 1', '5CS - group 2', '5CS - group 3', '5CS - Erasmus 1', '5CS - Erasmus 2', '5CS - Erasmus 3'], day: 3, start: '14:15', end: '15:45', teachers: ['Dariusz Makowski', 'Piotr Zając'], location: [{ building: 'B18', room: 'AULA A2' }], note: '', weeks: '011111011111000111' },
+  { id: '24077', subject: 'IOT', type: 'Lecture', groups: ['5CS - group 1', '5CS - group 2', '5CS - group 3'], day: 1, start: '14:15', end: '15:45', teachers: ['Dariusz Makowski', 'Piotr Zając'], location: [{ building: 'B18', room: 'AULA A2' }], note: '', weeks: '000000100000000000' },
+  { id: '24078', subject: 'IOT', type: 'Lecture', groups: ['5CS - group 1', '5CS - group 2', '5CS - group 3'], day: 2, start: '14:15', end: '15:45', teachers: ['Dariusz Makowski', 'Piotr Zając'], location: [{ building: 'B18', room: 'AULA A2' }], note: '', weeks: '000000000000100000' },
+  { id: '23735', subject: 'IOT', type: 'Laboratory', groups: ['5CS - group 1'], day: 4, start: '12:15', end: '13:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '111111111111000111' },
+  { id: '23734', subject: 'IOT', type: 'Laboratory', groups: ['5CS - group 2'], day: 3, start: '16:15', end: '17:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '011111011111000111' },
+  { id: '23736', subject: 'IOT', type: 'Laboratory', groups: ['5CS - group 3'], day: 4, start: '14:15', end: '15:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '111111111111000111' },
+  { id: '23737', subject: 'IOT', type: 'Laboratory', groups: ['5CS - Erasmus 1'], day: 4, start: '16:15', end: '17:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '011111111111000111' },
+  { id: '23818', subject: 'IOT', type: 'Laboratory', groups: ['5CS - Erasmus 2'], day: 3, start: '18:15', end: '19:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '011111011111000111' },
+  { id: '23738', subject: 'IOT', type: 'Laboratory', groups: ['5CS - Erasmus 3'], day: 4, start: '18:15', end: '19:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '011111111111000111' },
+
+  // ── Telecommunication Systems and Networks ──────────────────────
+  { id: '23363', subject: 'TSN', type: 'Lecture', groups: ['5ETE - group 1', '5ETE - group 2'], day: 1, start: '12:15', end: '13:45', teachers: ['Łukasz Januszkiewicz'], location: [{ building: 'B18/K22', room: 'A3' }], note: 'weeks 1-8', weeks: '011111011100000000' },
+  { id: '24689', subject: 'TSN', type: 'Lecture', groups: ['5ETE - group 1', '5ETE - group 2'], day: 3, start: '10:15', end: '11:45', teachers: ['Piotr Korbel'], location: [{ building: 'B18/K22', room: 'A3' }], note: 'weeks 9-15', weeks: '000000000111000111' },
+  { id: '23364', subject: 'TSN', type: 'Laboratory', groups: ['5ETE - group 1'], day: 1, start: '10:15', end: '11:45', teachers: ['Łukasz Januszkiewicz'], location: [{ building: 'B9', room: '321A' }], note: 'odd weeks', weeks: '010101001010100010' },
+  { id: '24190', subject: 'TSN', type: 'Laboratory', groups: ['5ETE - group 2'], day: 1, start: '10:15', end: '11:45', teachers: ['Łukasz Januszkiewicz'], location: [{ building: 'B9', room: '321A' }], note: 'even weeks', weeks: '001010010101000101' },
+  { id: '23867', subject: 'TSN', type: 'Laboratory', groups: ['5ETE - Erasmus 1'], day: 5, start: '08:15', end: '09:45', teachers: ['Łukasz Januszkiewicz'], location: [{ building: 'B9', room: '321A' }], note: 'even weeks', weeks: '010101010101000010' },
+
+  // ── Network Technologies ────────────────────────────────────────
+  { id: '23518', subject: 'NT', type: 'Lecture', groups: ['3IT - group 1', '3IT - group 2', '3IT - group 3', '3IT - ERASMUS'], day: 5, start: '14:00', end: '15:30', teachers: ['Piotr Lipiński'], location: [{ building: 'B15', room: 'F1' }], note: '', weeks: '011111111111000111' },
+  { id: '23519', subject: 'NT', type: 'Laboratory', groups: ['3IT - group 1'], day: 5, start: '12:15', end: '13:45', teachers: ['Marcin Leplawy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '011111011111000111' },
+  { id: '23520', subject: 'NT', type: 'Laboratory', groups: ['3IT - group 2'], day: 5, start: '10:15', end: '11:45', teachers: ['Marcin Leplawy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '011111111111000111' },
+  { id: '23521', subject: 'NT', type: 'Laboratory', groups: ['3IT - group 3'], day: 2, start: '12:30', end: '14:00', teachers: ['Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '011111111111000111' },
+  { id: '24565', subject: 'NT', type: 'Laboratory', groups: ['3IT - ERASMUS'], day: 1, start: '17:30', end: '19:00', teachers: ['Piotr Lipiński'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: 'group 1', weeks: '011111011111100111' },
+  { id: '24533', subject: 'NT', type: 'Laboratory', groups: ['3IT - ERASMUS'], day: 1, start: '19:15', end: '20:45', teachers: ['Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: 'group 2', weeks: '011111111111000111' },
+
+  // ── XML Technologies ────────────────────────────────────────────
+  { id: '23549', subject: 'XML', type: 'Lecture', groups: ['3IT - group 1', '3IT - group 2', '3IT - group 3', '3IT - ERASMUS'], day: 3, start: '14:15', end: '15:45', teachers: ['Joanna Ochelska-Mierzejewska'], location: [{ building: 'B9', room: 'F2' }], note: '', weeks: '011111011100000000' },
+  { id: '24608', subject: 'XML', type: 'Lecture', groups: ['3IT - group 1', '3IT - group 2', '3IT - group 3', '3IT - ERASMUS'], day: 1, start: '14:15', end: '15:45', teachers: ['Joanna Ochelska-Mierzejewska'], location: [{ building: 'B9', room: 'F2' }], note: '', weeks: '000000100000000000' },
+  { id: '23550', subject: 'XML', type: 'Laboratory', groups: ['3IT - group 1'], day: 4, start: '18:15', end: '19:45', teachers: ['Joanna Ochelska-Mierzejewska'], location: [{ building: 'B9', room: '433' }], note: '', weeks: '011111111111000111' },
+  { id: '23551', subject: 'XML', type: 'Laboratory', groups: ['3IT - group 2'], day: 2, start: '16:15', end: '17:45', teachers: ['Joanna Ochelska-Mierzejewska'], location: [{ building: 'B9', room: '433' }], note: '', weeks: '011111111111000111' },
+  { id: '23552', subject: 'XML', type: 'Laboratory', groups: ['3IT - group 3'], day: 2, start: '10:15', end: '11:45', teachers: ['Joanna Ochelska-Mierzejewska'], location: [{ building: 'B9', room: '433' }], note: '', weeks: '011111111111000111' },
+  { id: '24546', subject: 'XML', type: 'Laboratory', groups: ['3IT - ERASMUS'], day: 1, start: '08:15', end: '09:45', teachers: ['Joanna Ochelska-Mierzejewska'], location: [{ building: 'B9', room: '434' }], note: '', weeks: '011111011111100111' },
+
+  // ── Artificial Intelligence and Expert Systems ──────────────────
+  { id: '23576', subject: 'AI', type: 'Lecture', groups: ['7IT - group 1', '7IT - group 2', '7IT - ERASMUS'], day: 3, start: '15:45', end: '18:00', teachers: ['Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '011111011110000000' },
+  { id: '24642', subject: 'AI', type: 'Lecture', groups: ['7IT - group 1', '7IT - group 2', '7IT - ERASMUS'], day: 1, start: '15:45', end: '18:00', teachers: ['Krzysztof Lichy'], location: [{ building: 'B9', room: 'F7' }], note: '', weeks: '000000100000000000' },
+  { id: '23578', subject: 'AI', type: 'Laboratory', groups: ['7IT - group 1', '7IT - group 2'], day: 3, start: '18:15', end: '20:30', teachers: ['Piotr Lipiński', 'Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '011111011110000000' },
+  { id: '24634', subject: 'AI', type: 'Laboratory', groups: ['7IT - group 1'], day: 1, start: '18:15', end: '20:30', teachers: ['Piotr Lipiński', 'Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '000000100000000000' },
+  { id: '24636', subject: 'AI', type: 'Laboratory', groups: ['7IT - group 2'], day: 1, start: '18:15', end: '20:30', teachers: ['Piotr Lipiński', 'Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '000000100000000000' },
+  { id: '23577', subject: 'AI', type: 'Laboratory', groups: ['7IT - ERASMUS'], day: 5, start: '16:30', end: '18:45', teachers: ['Piotr Lipiński'], location: [{ building: 'B9', room: '434' }], note: '', weeks: '111111111100000000' },
+
+  // ── Introduction to Mobile Systems ──────────────────────────────
+  { id: '23563', subject: 'MOB', type: 'Lecture', groups: ['5IT - group 1', '5IT - group 2', '5IT - ERASMUS 1'], day: 1, start: '09:00', end: '10:30', teachers: ['Piotr Napieralski'], location: [{ building: 'B9', room: 'F4' }], note: '', weeks: '011111011111000000' },
+  { id: '23564', subject: 'MOB', type: 'Project', groups: ['5IT - group 1'], day: 3, start: '12:15', end: '13:45', teachers: ['Piotr Napieralski'], location: [{ building: 'B19', room: '211' }], note: '', weeks: '011111011111000111' },
+  { id: '24577', subject: 'MOB', type: 'Project', groups: ['5IT - group 1'], day: 1, start: '12:15', end: '13:45', teachers: ['Piotr Napieralski'], location: [{ building: 'B19', room: '211' }], note: '', weeks: '000000100000000000' },
+  { id: '24578', subject: 'MOB', type: 'Project', groups: ['5IT - group 1'], day: 2, start: '12:15', end: '13:45', teachers: ['Piotr Napieralski'], location: [{ building: 'B19', room: '211' }], note: '', weeks: '000000000000100000' },
+  { id: '23565', subject: 'MOB', type: 'Project', groups: ['5IT - group 2'], day: 5, start: '11:00', end: '12:30', teachers: ['Jakub Walczak'], location: [{ building: 'B9', room: '432' }], note: '', weeks: '111111111111000111' },
+  { id: '24569', subject: 'MOB', type: 'Project', groups: ['5IT - ERASMUS 1'], day: 5, start: '12:15', end: '13:45', teachers: ['Jakub Walczak'], location: [{ building: 'B9', room: '432' }], note: '', weeks: '111111111111000111' },
+];
+
+/* ===================================================================== */
+/* Constantes y utilidades                                               */
+/* ===================================================================== */
+const DAYS = ['', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+const DAYS_SHORT = ['', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie'];
+const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const GRID_START = 8 * 60, GRID_END = 21 * 60, PPM = 1.15; // px por minuto
+const REGULAR_MIN_WEEKS = 3; // menos semanas = sesión puntual
+const STORE = 'pl-erasmus-v1';
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const toMin = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+const fmtTime = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+const fmtDur = (m) => { const h = Math.floor(m / 60), r = m % 60; return h ? (r ? `${h} h ${r} min` : `${h} h`) : `${r} min`; };
+const popcount = (n) => { let c = 0; while (n) { n &= n - 1; c++; } return c; };
+const isErasmus = (label) => /erasmus/i.test(label);
+const isEnglish = (label) => /en\s*$/i.test(label.trim());
+const weekMonday = (i) => { const d = new Date(SEMESTER.week1Monday + 'T12:00:00'); d.setDate(d.getDate() + i * 7); return d; };
+const fmtDate = (d) => `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+const dateOf = (week, day) => { const d = weekMonday(week); d.setDate(d.getDate() + day - 1); return d; };
+
+const EV = EVENTS.map((e) => {
+  const mask = [...e.weeks].reduce((m, c, i) => (c === '1' ? m | (1 << i) : m), 0);
+  return { ...e, s: toMin(e.start), en: toMin(e.end), mask, count: popcount(mask), sub: /^group\s*\d+$/i.test(e.note || '') ? e.note.trim() : null };
+});
+const EV_BY_ID = Object.fromEntries(EV.map((e) => [e.id, e]));
+
+/* ===================================================================== */
+/* Componentes (asignatura × tipo) y opciones de grupo                   */
+/* ===================================================================== */
+const TYPE_ORDER = Object.keys(TYPES);
+const COMPONENTS = (() => {
+  const map = new Map();
+  for (const e of EV) {
+    const key = `${e.subject}|${e.type}`;
+    if (!map.has(key)) map.set(key, { key, subject: e.subject, type: e.type, events: [], optional: !!TYPES[e.type].optional });
+    map.get(key).events.push(e);
+  }
+  const comps = [...map.values()];
+  for (const c of comps) {
+    const byIds = new Map();
+    const add = (label, evs) => {
+      const k = evs.map((e) => e.id).sort().join(',');
+      if (!byIds.has(k)) byIds.set(k, { labels: [], events: evs });
+      byIds.get(k).labels.push(label);
+    };
+    for (const g of new Set(c.events.flatMap((e) => e.groups))) {
+      const evs = c.events.filter((e) => e.groups.includes(g));
+      const subs = [...new Set(evs.filter((e) => e.sub).map((e) => e.sub))];
+      if (!subs.length) add(g, evs);
+      else for (const s of subs) add(`${g} · ${s}`, evs.filter((e) => !e.sub || e.sub === s));
+    }
+    c.options = [...byIds.values()].map((o, i) => ({
+      id: `${c.key}#${i}`, comp: c.key, labels: o.labels,
+      label: o.labels.join(' / '),
+      events: o.events.sort((a, b) => a.day - b.day || a.s - b.s),
+      erasmus: o.labels.some(isErasmus), english: o.labels.some(isEnglish),
+    }));
+    c.options.sort((a, b) => (b.erasmus - a.erasmus) || (b.english - a.english) || a.label.localeCompare(b.label));
+    c.hasErasmus = c.options.some((o) => o.erasmus);
+    c.hasEnglish = c.options.some((o) => o.english);
+  }
+  const subjOrder = Object.keys(SUBJECTS);
+  return comps.sort((a, b) => subjOrder.indexOf(a.subject) - subjOrder.indexOf(b.subject) || TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type));
+})();
+const COMP_BY_KEY = Object.fromEntries(COMPONENTS.map((c) => [c.key, c]));
+const OPT_BY_ID = Object.fromEntries(COMPONENTS.flatMap((c) => c.options.map((o) => [o.id, o])));
+
+/* ===================================================================== */
+/* Optimizador: búsqueda exhaustiva con poda (branch & bound)            */
+/*   1) solapamientos (peso enorme)  2) grupos Erasmus / en inglés       */
+/*   3) no ir dos veces al campus el mismo día  4) minimizar huecos      */
+/* ===================================================================== */
+const W = { conflictWeek: 200000, conflictMin: 100, notErasmus: 50000, notEnglish: 30000, campusDay: 300, splitDay: 1500, gapMin: 3 };
+
+function prefCost(comp, opt) {
+  if (comp.hasErasmus && !opt.erasmus) return W.notErasmus;
+  if (comp.hasEnglish && !opt.english && !opt.erasmus) return W.notEnglish;
+  return 0;
+}
+
+function overlap(a, b, weekMask = -1) {
+  if (a.day !== b.day) return 0;
+  const mins = Math.min(a.en, b.en) - Math.max(a.s, b.s);
+  if (mins <= 0) return 0;
+  return popcount(a.mask & b.mask & weekMask) ? mins : 0;
+}
+
+function pairCost(a, b) {
+  let c = 0;
+  for (const x of a.events) for (const y of b.events) {
+    if (x.day !== y.day) continue;
+    const mins = Math.min(x.en, y.en) - Math.max(x.s, y.s);
+    const w = mins > 0 ? popcount(x.mask & y.mask) : 0;
+    if (w) c += w * (W.conflictWeek + mins * W.conflictMin);
+  }
+  return c;
+}
+
+function dayMetrics(events) {
+  const byDay = [[], [], [], [], [], []];
+  for (const e of events) if (e.count >= REGULAR_MIN_WEEKS) byDay[e.day].push(e);
+  let days = 0, splits = 0, gap = 0, cost = 0;
+  for (let d = 1; d <= 5; d++) {
+    const arr = byDay[d].sort((a, b) => a.s - b.s);
+    if (!arr.length) continue;
+    days++;
+    let end = arr[0].en;
+    for (let i = 1; i < arr.length; i++) {
+      const g = arr[i].s - end;
+      if (g > 0) { gap += g; if (g >= 120) { splits++; cost += W.splitDay + g; } else cost += g * W.gapMin; }
+      end = Math.max(end, arr[i].en);
+    }
+  }
+  return { days, splits, gap, cost: cost + days * W.campusDay };
+}
+
+function optimize(subjects) {
+  const comps = COMPONENTS.filter((c) => subjects.has(c.subject) && !c.optional).sort((a, b) => a.options.length - b.options.length);
+  const cache = new Map();
+  const pc = (a, b) => { const k = a.id < b.id ? a.id + b.id : b.id + a.id; if (!cache.has(k)) cache.set(k, pairCost(a, b)); return cache.get(k); };
+  let best = Infinity, bestPick = null;
+  const pick = [];
+  (function rec(i, acc) {
+    if (i === comps.length) {
+      const total = acc + dayMetrics(pick.flatMap((o) => o.events)).cost;
+      if (total < best) { best = total; bestPick = [...pick]; }
+      return;
+    }
+    const c = comps[i];
+    for (const o of c.options) {
+      let cost = acc + prefCost(c, o);
+      for (const p of pick) { cost += pc(p, o); if (cost >= best) break; }
+      if (cost >= best) continue;
+      pick.push(o); rec(i + 1, cost); pick.pop();
+    }
+  })(0, 0);
+  const sel = {};
+  for (const c of COMPONENTS) if (subjects.has(c.subject)) sel[c.key] = null;
+  (bestPick || []).forEach((o) => { sel[o.comp] = o.id; });
+  return sel;
+}
+
+/* ===================================================================== */
+/* Estado                                                                */
+/* ===================================================================== */
+const state = {
+  mode: 'optimized',          // 'optimized' | 'all'
+  week: 'pattern',            // 'pattern' | índice 0..17
+  oneOff: false,
+  subjects: new Set(Object.keys(SUBJECTS)),
+  type: 'all',
+  q: '',
+  sel: {},
+  day: 1,
+};
+
+function save() {
+  try { localStorage.setItem(STORE, JSON.stringify({ mode: state.mode, sel: state.sel, subjects: [...state.subjects], oneOff: state.oneOff })); } catch (e) {}
+}
+function load() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (!raw) return false;
+    if (raw.mode) state.mode = raw.mode;
+    if (Array.isArray(raw.subjects)) state.subjects = new Set(raw.subjects.filter((s) => SUBJECTS[s]));
+    state.oneOff = !!raw.oneOff;
+    if (raw.sel && Object.entries(raw.sel).every(([k, v]) => COMP_BY_KEY[k] && (v === null || OPT_BY_ID[v]))) { state.sel = raw.sel; return COMPONENTS.every((c) => c.key in state.sel); }
+  } catch (e) {}
+  return false;
+}
+
+const selectedOptions = () => Object.values(state.sel).filter(Boolean).map((id) => OPT_BY_ID[id]);
+const selectedIds = () => new Set(selectedOptions().flatMap((o) => o.events.map((e) => e.id)));
+const weekMaskNow = () => (state.week === 'pattern' ? -1 : 1 << state.week);
+const optionOfEvent = (e) => { const id = state.sel[`${e.subject}|${e.type}`]; return id && OPT_BY_ID[id].events.includes(e) ? OPT_BY_ID[id] : null; };
+
+function weekOk(e) {
+  if (state.week === 'pattern') return e.count >= REGULAR_MIN_WEEKS || state.oneOff;
+  return !!(e.mask & (1 << state.week));
+}
+function typeOk(e) { return state.type === 'all' || e.type === state.type; }
+function searchOk(e) {
+  if (!state.q) return true;
+  const hay = [e.teachers.join(' '), e.location.map((l) => `${l.building} ${l.room}`).join(' '), e.groups.join(' '), SUBJECTS[e.subject].name, e.note].join(' ').toLowerCase();
+  return state.q.toLowerCase().split(/\s+/).every((t) => hay.includes(t));
+}
+function visibleEvents() {
+  const sel = selectedIds();
+  return EV.filter((e) => state.subjects.has(e.subject) && (state.mode === 'all' || sel.has(e.id)) && typeOk(e) && weekOk(e) && searchOk(e));
+}
+
+function conflicts() {
+  const evs = selectedOptions().flatMap((o) => o.events).filter((e) => state.subjects.has(e.subject));
+  const wm = weekMaskNow(), out = [];
+  for (let i = 0; i < evs.length; i++) for (let j = i + 1; j < evs.length; j++) {
+    const mins = overlap(evs[i], evs[j], wm);
+    if (mins) out.push({ a: evs[i], b: evs[j], mins, weeks: popcount(evs[i].mask & evs[j].mask & wm) });
+  }
+  return out;
+}
+
+/* ===================================================================== */
+/* Textos de frecuencia                                                  */
+/* ===================================================================== */
+function weekRanges(mask) {
+  const r = []; let start = null;
+  for (let i = 0; i <= SEMESTER.weeks; i++) {
+    const on = i < SEMESTER.weeks && mask & (1 << i);
+    if (on && start === null) start = i;
+    if (!on && start !== null) { r.push([start, i - 1]); start = null; }
+  }
+  return r;
+}
+function noteEs(note) {
+  if (!note) return '';
+  return note.replace(/^odd weeks$/i, 'Semanas impares').replace(/^even weeks$/i, 'Semanas pares')
+    .replace(/^weeks\s*(\d+)\s*-\s*(\d+)$/i, 'Semanas $1–$2').replace(/^group\s*(\d+)$/i, 'Subgrupo $1');
+}
+function freqText(e) {
+  const ranges = weekRanges(e.mask).map(([a, b]) => (a === b ? `${fmtDate(dateOf(a, e.day))}` : `${fmtDate(dateOf(a, e.day))} – ${fmtDate(dateOf(b, e.day))}`));
+  return { count: e.count, ranges, note: noteEs(e.note) };
+}
+
+/* ===================================================================== */
+/* Iconos                                                                */
+/* ===================================================================== */
+const I = {
+  clock: '<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>',
+  pin: '<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+  user: '<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0" stroke-linecap="round"/></svg>',
+  users: '<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6" stroke-linecap="round"/></svg>',
+  cal: '<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18" stroke-linecap="round"/></svg>',
+  alert: '<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3L2 20h20L12 3z" stroke-linejoin="round"/><path d="M12 10v4M12 17h.01" stroke-linecap="round"/></svg>',
+  check: '<svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  x: '<svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>',
+  star: '<svg class="h-3 w-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.3L12 17.8 5.7 21.5l1.7-7.3L2 9.5l7.1-.6z"/></svg>',
+};
+
+/* ===================================================================== */
+/* Render: controles                                                     */
+/* ===================================================================== */
+function renderModeSwitch() {
+  const html = `
+    <div class="flex rounded-xl bg-slate-200/70 p-1 text-sm font-medium dark:bg-slate-800/80">
+      ${[['optimized', 'Mi horario optimizado'], ['all', 'Todos los grupos']].map(([k, l]) => `
+        <button data-mode="${k}" class="flex-1 whitespace-nowrap rounded-lg px-3 py-1.5 transition ${state.mode === k ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-950 dark:text-white' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'}">
+          ${k === 'optimized' ? '✨ ' : ''}${l}</button>`).join('')}
+    </div>`;
+  $('modeSwitchDesktop').innerHTML = html;
+  $('modeSwitchMobile').innerHTML = html;
+}
+
+function renderSubjects() {
+  const sel = selectedIds();
+  $('subjectList').innerHTML = Object.entries(SUBJECTS).map(([k, s]) => {
+    const n = EV.filter((e) => e.subject === k && sel.has(e.id) && e.count >= REGULAR_MIN_WEEKS).length;
+    return `
+    <label class="toggle group flex cursor-pointer items-center gap-3 rounded-xl px-2 py-1.5 transition hover:bg-slate-100 dark:hover:bg-slate-800" style="--c:${s.color}">
+      <input type="checkbox" data-subject="${k}" class="peer sr-only" ${state.subjects.has(k) ? 'checked' : ''} />
+      <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 border-slate-300 text-white transition dark:border-slate-600">
+        <svg class="h-3 w-3 opacity-0 transition" fill="none" stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="min-w-0 flex-1">
+        <span class="block truncate text-sm font-medium ${state.subjects.has(k) ? '' : 'text-slate-400 line-through decoration-slate-300'}">${esc(s.name)}</span>
+      </span>
+      <span class="soft shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-bold">${esc(s.short)}</span>
+      <span class="w-4 shrink-0 text-right text-[11px] tabular-nums text-slate-400" title="Sesiones semanales en tu horario">${n}</span>
+    </label>`;
+  }).join('');
+}
+
+function renderTypeFilter() {
+  const opts = [['all', 'Todos'], ['Lecture', 'Teorías'], ['Laboratory', 'Labs'], ['Project', 'Proyectos'], ['Tutorial', 'Tutorías']];
+  $('typeFilter').innerHTML = opts.map(([k, l]) => `
+    <button data-type="${k}" class="rounded-lg px-2.5 py-1 text-xs font-medium transition ${state.type === k ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}">${l}</button>`).join('');
+}
+
+function optionSummary(o) {
+  const reg = o.events.filter((e) => e.count >= REGULAR_MIN_WEEKS);
+  return (reg.length ? reg : o.events).map((e) => `${DAYS_SHORT[e.day]} ${e.start}`).join(' + ');
+}
+
+function renderGroupPicker() {
+  const confl = conflicts();
+  const conflictComps = new Set(confl.flatMap((c) => [`${c.a.subject}|${c.a.type}`, `${c.b.subject}|${c.b.type}`]));
+  let erasmusOk = 0, erasmusTotal = 0;
+  const html = Object.entries(SUBJECTS).map(([k, s]) => {
+    const comps = COMPONENTS.filter((c) => c.subject === k);
+    return `
+    <div class="${state.subjects.has(k) ? '' : 'opacity-40'}" style="--c:${s.color}">
+      <div class="mb-1 flex items-center gap-2 text-xs font-semibold"><span class="dot h-2 w-2 rounded-full"></span>${esc(s.name)}</div>
+      <div class="space-y-1.5 border-l-2 pl-3" style="border-color:color-mix(in srgb, var(--c) 35%, transparent)">
+        ${comps.map((c) => {
+          const cur = state.sel[c.key] ? OPT_BY_ID[state.sel[c.key]] : null;
+          if (c.hasErasmus && state.subjects.has(k)) { erasmusTotal++; if (cur && cur.erasmus) erasmusOk++; }
+          const bad = conflictComps.has(c.key);
+          return `
+          <label class="block">
+            <span class="mb-0.5 flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+              <span class="badge rounded px-1 py-px text-[9px] font-bold tracking-wide">${TYPES[c.type].badge}</span>
+              ${c.hasErasmus ? (cur && cur.erasmus ? '<span class="text-emerald-600 dark:text-emerald-400">grupo Erasmus</span>' : '<span class="text-amber-600 dark:text-amber-400">hay grupo Erasmus</span>') : ''}
+              ${bad ? `<span class="ml-auto flex items-center gap-1 text-red-500">${I.alert}choque</span>` : ''}
+            </span>
+            <select data-comp="${c.key}" class="w-full cursor-pointer rounded-lg border ${bad ? 'border-red-400' : 'border-slate-200 dark:border-slate-700'} bg-slate-50 px-2 py-1.5 text-xs outline-none focus:border-indigo-400 dark:bg-slate-800">
+              <option value="">— No cursar —</option>
+              ${c.options.map((o) => `<option value="${o.id}" ${cur === o ? 'selected' : ''}>${o.erasmus ? '★ ' : ''}${esc(o.label)} · ${esc(optionSummary(o))}</option>`).join('')}
+            </select>
+          </label>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  $('groupPicker').innerHTML = html;
+  $('groupsBadge').textContent = `${erasmusOk}/${erasmusTotal} Erasmus`;
+}
+
+function renderWeekSelect() {
+  const opts = [`<option value="pattern">Semana tipo (patrón)</option>`];
+  for (let i = 0; i < SEMESTER.weeks; i++) {
+    const m = weekMonday(i), f = new Date(m); f.setDate(f.getDate() + 4);
+    const n = EV.filter((e) => e.mask & (1 << i)).length;
+    opts.push(`<option value="${i}">Sem. ${i + 1} · ${fmtDate(m)} – ${fmtDate(f)}${n ? '' : ' (sin clases)'}</option>`);
+  }
+  $('weekSelect').innerHTML = opts.join('');
+  $('weekSelect').value = String(state.week);
+  $('oneOffWrap').classList.toggle('hidden', state.week !== 'pattern');
+  $('oneOff').checked = state.oneOff;
+}
+
+function chip(label, value, tone = 'slate') {
+  const tones = {
+    slate: 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900',
+    green: 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300',
+    red: 'border-red-200 bg-red-50 text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300',
+    amber: 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300',
+  };
+  return `<div class="rounded-xl border px-3 py-1.5 text-xs shadow-sm ${tones[tone]}"><span class="opacity-70">${label}</span> <b class="tabular-nums">${value}</b></div>`;
+}
+
+function renderStats() {
+  if (state.mode === 'all') {
+    const n = visibleEvents().length;
+    $('stats').innerHTML = chip('Sesiones visibles', n) + chip('Grupos posibles', COMPONENTS.reduce((a, c) => a + c.options.length, 0));
+    return;
+  }
+  const evs = selectedOptions().flatMap((o) => o.events).filter((e) => state.subjects.has(e.subject));
+  const m = dayMetrics(evs);
+  const hours = evs.filter((e) => (state.week === 'pattern' ? e.count >= REGULAR_MIN_WEEKS : e.mask & (1 << state.week))).reduce((a, e) => a + e.en - e.s, 0);
+  const c = conflicts();
+  $('stats').innerHTML =
+    chip('Choques', c.length, c.length ? 'red' : 'green') +
+    chip('Días en campus', m.days) +
+    chip('Horas/sem', (hours / 60).toFixed(1).replace('.0', '')) +
+    chip('Huecos', fmtDur(m.gap), m.gap > 180 ? 'amber' : 'slate') +
+    chip('Días partidos', m.splits, m.splits ? 'amber' : 'green');
+}
+
+const unavoidable = (x) => {
+  const [A, B] = [x.a, x.b].map((e) => COMP_BY_KEY[`${e.subject}|${e.type}`]);
+  return A.options.every((oa) => B.options.every((ob) => pairCost(oa, ob) > 0));
+};
+
+function renderAlerts() {
+  if (state.mode !== 'optimized') { $('alerts').innerHTML = ''; return; }
+  const c = conflicts();
+  const nonErasmus = COMPONENTS.filter((k) => state.subjects.has(k.subject) && k.hasErasmus && state.sel[k.key] && !OPT_BY_ID[state.sel[k.key]].erasmus);
+  let html = '';
+  if (c.length) {
+    html += `<div class="mb-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
+      <div class="mb-1 flex items-center gap-2 font-semibold">${I.alert} ${c.length} solapamiento${c.length > 1 ? 's' : ''} en tu selección</div>
+      <ul class="space-y-0.5 text-xs">${c.map((x) => `<li>${DAYS[x.a.day]} ${fmtTime(Math.max(x.a.s, x.b.s))}: <b>${SUBJECTS[x.a.subject].short}</b> ${TYPES[x.a.type].badge.toLowerCase()} ↔ <b>${SUBJECTS[x.b.subject].short}</b> ${TYPES[x.b.type].badge.toLowerCase()} · ${x.mins} min${state.week === 'pattern' ? ` · ${x.weeks} semana${x.weeks > 1 ? 's' : ''}` : ''}${unavoidable(x) ? ' · <span class="rounded bg-red-200/60 px-1 font-semibold dark:bg-red-500/20">inevitable: no hay otro grupo</span>' : ''}</li>`).join('')}</ul>
+    </div>`;
+  }
+  if (nonErasmus.length) {
+    html += `<details class="mb-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+      <summary class="cursor-pointer font-semibold">${nonErasmus.length} componente${nonErasmus.length > 1 ? 's' : ''} con grupo local en vez del Erasmus</summary>
+      <p class="mt-2 text-xs">El grupo Erasmus choca con otra clase obligatoria, así que el optimizador ha elegido un grupo local sin solapamientos. Puedes forzar el Erasmus en «Mis grupos» (consulta antes con tu coordinador).</p>
+      <ul class="mt-2 space-y-0.5 text-xs">${nonErasmus.map((k) => { const o = OPT_BY_ID[state.sel[k.key]]; const er = k.options.filter((x) => x.erasmus); return `<li><b>${SUBJECTS[k.subject].short} · ${TYPES[k.type].badge}</b>: ${esc(o.label)} (${esc(optionSummary(o))}) en vez de ${er.map((x) => `${esc(x.label)} (${esc(optionSummary(x))})`).join(', ')}</li>`; }).join('')}</ul>
+    </details>`;
+  }
+  $('alerts').innerHTML = html;
+}
+
+/* ===================================================================== */
+/* Render: tarjeta de evento                                             */
+/* ===================================================================== */
+function eventCard(e, { conflictIds, selIds, compact }) {
+  const s = SUBJECTS[e.subject];
+  const isSel = selIds.has(e.id);
+  const opt = optionOfEvent(e);
+  const groupLabel = opt ? opt.label : e.groups.join(', ');
+  const loc = e.location.map((l) => (l.room ? `${l.building} · ${l.room}` : l.building)).join(' / ');
+  const oneOff = e.count < REGULAR_MIN_WEEKS;
+  const muted = state.mode === 'all' && !isSel;
+  return `
+  <button data-ev="${e.id}" class="ev ${muted ? 'muted' : ''} ${conflictIds.has(e.id) ? 'conflict' : ''} group relative flex h-full w-full flex-col overflow-hidden rounded-xl px-2 py-1.5 text-left text-[11px] leading-tight transition hover:-translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" style="--c:${s.color}">
+    <span class="flex items-center gap-1">
+      <span class="badge rounded px-1 py-px text-[9px] font-bold tracking-wide">${TYPES[e.type].badge}</span>
+      ${oneOff ? '<span class="rounded bg-slate-900/10 px-1 py-px text-[9px] font-semibold dark:bg-white/10">PUNTUAL</span>' : ''}
+      ${state.mode === 'all' && isSel ? `<span class="ml-auto rounded-full bg-emerald-500 p-0.5 text-white" title="En tu horario">${I.check}</span>` : ''}
+      ${conflictIds.has(e.id) ? `<span class="ml-auto text-red-500" title="Solapamiento">${I.alert}</span>` : ''}
+    </span>
+    <span class="ev-title mt-1 font-semibold ${compact ? 'truncate' : 'line-clamp-2'}">${esc(s.name)}</span>
+    <span class="mt-0.5 tabular-nums text-slate-600 dark:text-slate-300">${e.start}–${e.end}</span>
+    <span class="truncate text-slate-500 dark:text-slate-400">${esc(groupLabel)}</span>
+    <span class="truncate text-slate-500 dark:text-slate-400">${esc(loc)}</span>
+  </button>`;
+}
+
+/* Reparte en columnas los eventos que se solapan visualmente en un día */
+function layoutDay(events) {
+  const sorted = [...events].sort((a, b) => a.s - b.s || b.en - a.en);
+  const out = [];
+  let cluster = [], clusterEnd = -1;
+  const flush = () => {
+    const cols = [];
+    for (const e of cluster) {
+      let c = cols.findIndex((end) => end <= e.s);
+      if (c === -1) { c = cols.length; cols.push(0); }
+      cols[c] = e.en;
+      out.push({ e, col: c });
+    }
+    for (const o of out.slice(out.length - cluster.length)) o.cols = cols.length;
+    cluster = []; clusterEnd = -1;
+  };
+  for (const e of sorted) {
+    if (cluster.length && e.s >= clusterEnd) flush();
+    cluster.push(e); clusterEnd = Math.max(clusterEnd, e.en);
+  }
+  if (cluster.length) flush();
+  return out;
+}
+
+function todayInfo() {
+  const now = new Date(), m0 = weekMonday(0);
+  const diff = Math.floor((now - m0) / 86400000);
+  const week = Math.floor(diff / 7), day = (diff % 7) + 1;
+  return { week, day, min: now.getHours() * 60 + now.getMinutes() };
+}
+
+/* ===================================================================== */
+/* Render: cuadrícula semanal (escritorio)                               */
+/* ===================================================================== */
+function renderGrid() {
+  const evs = visibleEvents();
+  const conflictIds = new Set(state.mode === 'optimized' ? conflicts().flatMap((c) => [c.a.id, c.b.id]) : []);
+  const selIds = selectedIds();
+  const height = (GRID_END - GRID_START) * PPM;
+  const t = todayInfo();
+  const hours = [];
+  for (let m = GRID_START; m < GRID_END; m += 60) hours.push(m);
+
+  const head = [1, 2, 3, 4, 5].map((d) => {
+    const isToday = state.week !== 'pattern' && t.week === state.week && t.day === d;
+    const date = state.week === 'pattern' ? '' : fmtDate(dateOf(state.week, d));
+    const n = evs.filter((e) => e.day === d).length;
+    return `<div class="flex items-baseline gap-2 border-l border-slate-200 px-3 py-3 dark:border-slate-800 ${isToday ? 'bg-indigo-50 dark:bg-indigo-500/10' : ''}">
+      <span class="text-sm font-semibold ${isToday ? 'text-indigo-600 dark:text-indigo-400' : ''}">${DAYS[d]}</span>
+      <span class="text-xs text-slate-400">${date}</span>
+      <span class="ml-auto rounded-full bg-slate-100 px-2 text-[11px] tabular-nums text-slate-500 dark:bg-slate-800">${n}</span>
+    </div>`;
+  }).join('');
+
+  const cols = [1, 2, 3, 4, 5].map((d) => {
+    const items = layoutDay(evs.filter((e) => e.day === d));
+    const isToday = state.week !== 'pattern' && t.week === state.week && t.day === d;
+    const nowLine = isToday && t.min > GRID_START && t.min < GRID_END ? `<div class="pointer-events-none absolute inset-x-0 z-20 border-t-2 border-red-500" style="top:${(t.min - GRID_START) * PPM}px"><span class="absolute -left-1 -top-[5px] h-2 w-2 rounded-full bg-red-500"></span></div>` : '';
+    return `<div class="relative border-l border-slate-200 dark:border-slate-800 ${isToday ? 'bg-indigo-50/40 dark:bg-indigo-500/5' : ''}">
+      ${items.map(({ e, col, cols: n }) => {
+        const top = (e.s - GRID_START) * PPM, h = (e.en - e.s) * PPM - 3;
+        return `<div class="absolute p-[2px]" style="top:${top}px;height:${h + 3}px;left:${(col / n) * 100}%;width:${100 / n}%">${eventCard(e, { conflictIds, selIds, compact: n > 2 })}</div>`;
+      }).join('')}
+      ${nowLine}
+    </div>`;
+  }).join('');
+
+  $('gridView').innerHTML = `
+  <div class="scroll-thin overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div class="min-w-[860px]">
+      <div class="sticky top-0 z-10 grid grid-cols-[56px_repeat(5,minmax(0,1fr))] border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
+        <div></div>${head}
+      </div>
+      <div class="grid grid-cols-[56px_repeat(5,minmax(0,1fr))]">
+        <div class="relative" style="height:${height}px">
+          ${hours.map((m) => `<div class="absolute right-2 -translate-y-1/2 text-[11px] tabular-nums text-slate-400" style="top:${(m - GRID_START) * PPM}px">${m === GRID_START ? '' : fmtTime(m)}</div>`).join('')}
+        </div>
+        <div class="relative col-span-5 grid grid-cols-5" style="height:${height}px">
+          <div class="hour-lines pointer-events-none absolute inset-0" style="background-size:100% ${60 * PPM}px"></div>
+          <div class="half-lines pointer-events-none absolute inset-0" style="background-size:100% ${60 * PPM}px;background-position:0 ${30 * PPM}px"></div>
+          ${cols}
+        </div>
+      </div>
+    </div>
+  </div>
+  ${evs.length ? '' : emptyState()}`;
+}
+
+function emptyState() {
+  return `<div class="mt-4 rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 dark:border-slate-700">No hay clases que coincidan con los filtros actuales.</div>`;
+}
+
+/* ===================================================================== */
+/* Render: agenda por días (móvil)                                       */
+/* ===================================================================== */
+function renderAgenda() {
+  const evs = visibleEvents();
+  const conflictIds = new Set(state.mode === 'optimized' ? conflicts().flatMap((c) => [c.a.id, c.b.id]) : []);
+  const selIds = selectedIds();
+  const t = todayInfo();
+  const tabs = [1, 2, 3, 4, 5].map((d) => {
+    const n = evs.filter((e) => e.day === d).length;
+    const on = state.day === d;
+    const date = state.week === 'pattern' ? '' : fmtDate(dateOf(state.week, d)).split(' ')[0];
+    return `<button data-day="${d}" class="flex flex-1 flex-col items-center rounded-xl py-2 text-xs font-medium transition ${on ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-slate-500 dark:text-slate-400'}">
+      <span>${DAYS_SHORT[d]}${date ? ` ${date}` : ''}</span>
+      <span class="mt-0.5 rounded-full px-1.5 text-[10px] tabular-nums ${on ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'}">${n}</span>
+    </button>`;
+  }).join('');
+  const list = evs.filter((e) => e.day === state.day).sort((a, b) => a.s - b.s);
+  let body = '';
+  let prevEnd = null;
+  for (const e of list) {
+    if (state.mode === 'optimized' && prevEnd !== null && e.s - prevEnd >= 15) {
+      const g = e.s - prevEnd;
+      body += `<div class="flex items-center gap-2 py-1 pl-16 text-[11px] ${g >= 120 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400'}"><span class="h-px flex-1 border-t border-dashed border-current opacity-50"></span>${fmtDur(g)} libre${g >= 120 ? ' · hueco largo' : ''}<span class="h-px flex-1 border-t border-dashed border-current opacity-50"></span></div>`;
+    }
+    if (prevEnd === null || e.en > prevEnd) prevEnd = Math.max(prevEnd ?? 0, e.en);
+    body += `<div class="flex gap-3">
+      <div class="shrink-0 pt-2 text-right text-xs tabular-nums text-slate-500" style="width:52px"><div class="font-semibold text-slate-700 dark:text-slate-200">${e.start}</div><div>${e.end}</div></div>
+      <div class="min-w-0 flex-1 pb-2" style="min-height:${Math.max(72, (e.en - e.s) * 0.8)}px">${eventCard(e, { conflictIds, selIds, compact: false })}</div>
+    </div>`;
+  }
+  $('agendaView').innerHTML = `
+    <div class="sticky top-[65px] z-20 -mx-4 mb-3 bg-slate-50/90 px-4 py-2 backdrop-blur dark:bg-slate-950/90">
+      <div class="flex gap-1 rounded-2xl border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-800 dark:bg-slate-900">${tabs}</div>
+    </div>
+    <div class="space-y-0">${body || `<div class="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 dark:border-slate-700">Sin clases este día 🎉</div>`}</div>`;
+  if (state.week !== 'pattern' && t.week === state.week) {/* el día de hoy ya se marca vía selección inicial */}
+}
+
+/* ===================================================================== */
+/* Modal de detalle                                                      */
+/* ===================================================================== */
+function openModal(id) {
+  const e = EV_BY_ID[id];
+  const s = SUBJECTS[e.subject];
+  const comp = COMP_BY_KEY[`${e.subject}|${e.type}`];
+  const curId = state.sel[comp.key];
+  const opt = optionOfEvent(e);
+  const f = freqText(e);
+  const holders = comp.options.filter((o) => o.events.includes(e));
+  const weekStrip = Array.from({ length: SEMESTER.weeks }, (_, i) => {
+    const on = e.mask & (1 << i);
+    return `<div title="Sem. ${i + 1} · ${fmtDate(dateOf(i, e.day))}" class="h-6 flex-1 rounded ${on ? 'dot' : 'bg-slate-100 dark:bg-slate-800'} ${state.week === i ? 'ring-2 ring-offset-1 ring-indigo-500 dark:ring-offset-slate-900' : ''}"></div>`;
+  }).join('');
+
+  const row = (icon, label, value) => `
+    <div class="flex gap-3 py-2.5">
+      <div class="soft flex h-9 w-9 shrink-0 items-center justify-center rounded-xl">${icon}</div>
+      <div class="min-w-0"><div class="text-[11px] font-medium uppercase tracking-wider text-slate-400">${label}</div><div class="text-sm font-medium">${value}</div></div>
+    </div>`;
+
+  const alternatives = comp.options.map((o) => {
+    const isCur = o.id === curId;
+    return `<button data-pick="${o.id}" class="flex w-full items-center gap-3 rounded-xl border px-3 py-2 text-left text-xs transition ${isCur ? 'border-indigo-400 bg-indigo-50 dark:border-indigo-500/50 dark:bg-indigo-500/10' : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800'}">
+      <span class="min-w-0 flex-1">
+        <span class="flex items-center gap-1 font-semibold">${o.erasmus ? `<span class="text-amber-500">${I.star}</span>` : ''}${esc(o.label)}</span>
+        <span class="text-slate-500 dark:text-slate-400">${esc(o.events.map((x) => `${DAYS_SHORT[x.day]} ${x.start}–${x.end}${x.count < REGULAR_MIN_WEEKS ? ' (puntual)' : ''}`).join(' · '))}</span>
+      </span>
+      ${isCur ? `<span class="rounded-full bg-indigo-600 px-2 py-0.5 text-[10px] font-semibold text-white">Actual</span>` : `<span class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400">Elegir</span>`}
+    </button>`;
+  }).join('');
+
+  $('modalCard').innerHTML = `
+    <div style="--c:${s.color}">
+      <div class="relative overflow-hidden px-6 pb-5 pt-6" style="background:linear-gradient(135deg, color-mix(in srgb, var(--c) 22%, transparent), transparent 70%)">
+        <div class="mx-auto mb-4 h-1.5 w-10 rounded-full bg-slate-300 sm:hidden dark:bg-slate-700"></div>
+        <button id="modalClose" class="absolute right-4 top-4 rounded-xl p-2 text-slate-500 transition hover:bg-slate-900/5 dark:hover:bg-white/10" aria-label="Cerrar">${I.x}</button>
+        <div class="flex items-center gap-2">
+          <span class="badge rounded-md px-2 py-0.5 text-[11px] font-bold tracking-wide">${TYPES[e.type].badge}</span>
+          <span class="soft rounded-md px-2 py-0.5 text-[11px] font-bold">${esc(s.short)}</span>
+          ${e.count < REGULAR_MIN_WEEKS ? '<span class="rounded-md bg-slate-900/10 px-2 py-0.5 text-[11px] font-semibold dark:bg-white/10">Sesión puntual</span>' : ''}
+        </div>
+        <h3 class="ev-title mt-3 pr-8 text-xl font-bold leading-snug">${esc(s.name)}</h3>
+        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">${TYPES[e.type].label} · Celcat #${s.celcat} · evento ${e.id}</p>
+      </div>
+      <div class="divide-y divide-slate-100 px-6 dark:divide-slate-800">
+        ${row(I.users, 'Grupo', `${esc(opt ? opt.label : e.groups.join(', '))}${opt && opt.erasmus ? ' <span class="ml-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">ERASMUS</span>' : ''}${e.groups.length > 1 ? `<div class="mt-0.5 text-xs font-normal text-slate-500">Compartida con: ${esc(e.groups.join(', '))}</div>` : ''}`)}
+        ${row(I.clock, 'Día y hora', `${DAYS[e.day]} · ${e.start} – ${e.end} <span class="ml-1 rounded-md bg-slate-100 px-1.5 py-0.5 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">${fmtDur(e.en - e.s)}</span>`)}
+        ${row(I.user, e.teachers.length > 1 ? 'Profesores' : 'Profesor', esc(e.teachers.join(' · ')))}
+        ${row(I.pin, 'Ubicación', e.location.map((l) => (l.room ? `Edificio <b>${esc(l.building)}</b> · Aula <b>${esc(l.room)}</b>` : `<b>${esc(l.building)}</b>`)).join('<br>'))}
+        ${row(I.cal, 'Semanas / frecuencia', `${f.note ? `<span class="soft mr-1 rounded px-1.5 py-0.5 text-xs font-semibold">${esc(f.note)}</span>` : ''}${f.count} sesión${f.count > 1 ? 'es' : ''}<div class="mt-1 text-xs font-normal text-slate-500">${esc(f.ranges.join(' · '))}</div>`)}
+        <div class="py-3">
+          <div class="mb-1.5 flex justify-between text-[10px] text-slate-400"><span>Sem. 1</span><span>Navidad</span><span>Sem. ${SEMESTER.weeks}</span></div>
+          <div class="flex gap-[3px]">${weekStrip}</div>
+        </div>
+        ${e.note && !/^(odd|even) weeks$|^weeks|^group/i.test(e.note) ? `<div class="py-3 text-xs text-slate-500">Nota: ${esc(e.note)}</div>` : ''}
+      </div>
+      <div class="px-6 pb-6 pt-2">
+        ${state.mode === 'all' && !holders.some((o) => o.id === curId) ? `
+          <button data-pick="${holders[0].id}" class="mb-4 w-full rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-600/30 transition hover:bg-indigo-500">Usar este grupo en mi horario</button>` : ''}
+        <div class="mb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Grupos de ${TYPES[e.type].label.toLowerCase()} disponibles</div>
+        <div class="space-y-1.5">${alternatives}</div>
+      </div>
+    </div>`;
+  $('modal').classList.remove('hidden');
+  $('modal').classList.add('flex');
+  document.body.style.overflow = 'hidden';
+  $('modalCard').classList.remove('modal-enter'); void $('modalCard').offsetWidth; $('modalCard').classList.add('modal-enter');
+}
+function closeModal() {
+  $('modal').classList.add('hidden');
+  $('modal').classList.remove('flex');
+  document.body.style.overflow = '';
+}
+
+/* ===================================================================== */
+/* Ciclo de render y eventos                                             */
+/* ===================================================================== */
+function render() {
+  renderModeSwitch();
+  renderSubjects();
+  renderTypeFilter();
+  renderGroupPicker();
+  renderWeekSelect();
+  renderStats();
+  renderAlerts();
+  renderGrid();
+  renderAgenda();
+  save();
+}
+
+function setWeek(w) {
+  state.week = w;
+  const t = todayInfo();
+  if (w !== 'pattern' && t.week === w && t.day >= 1 && t.day <= 5) state.day = t.day;
+  render();
+}
+
+document.addEventListener('click', (ev) => {
+  const t = ev.target.closest('[data-mode],[data-type],[data-ev],[data-pick],[data-day]');
+  if (!t) return;
+  if (t.dataset.mode) { state.mode = t.dataset.mode; render(); }
+  else if (t.dataset.type) { state.type = t.dataset.type; render(); }
+  else if (t.dataset.ev) openModal(t.dataset.ev);
+  else if (t.dataset.pick) {
+    const o = OPT_BY_ID[t.dataset.pick];
+    state.sel[o.comp] = o.id;
+    render();
+    if (t.closest('#modalCard')) openModal((o.events.find((x) => x.count >= REGULAR_MIN_WEEKS) || o.events[0]).id);
+  }
+  else if (t.dataset.day) { state.day = +t.dataset.day; renderAgenda(); }
+});
+
+$('subjectList').addEventListener('change', (ev) => {
+  const k = ev.target.dataset.subject;
+  if (!k) return;
+  ev.target.checked ? state.subjects.add(k) : state.subjects.delete(k);
+  render();
+});
+$('groupPicker').addEventListener('change', (ev) => {
+  const k = ev.target.dataset.comp;
+  if (!k) return;
+  state.sel[k] = ev.target.value || null;
+  render();
+});
+$('allSubjects').onclick = () => { state.subjects = new Set(Object.keys(SUBJECTS)); render(); };
+$('noSubjects').onclick = () => { state.subjects = new Set(); render(); };
+$('search').addEventListener('input', (ev) => { state.q = ev.target.value.trim(); renderStats(); renderGrid(); renderAgenda(); });
+$('weekSelect').onchange = (ev) => setWeek(ev.target.value === 'pattern' ? 'pattern' : +ev.target.value);
+$('weekPrev').onclick = () => setWeek(state.week === 'pattern' ? 'pattern' : state.week === 0 ? 'pattern' : state.week - 1);
+$('weekNext').onclick = () => setWeek(state.week === 'pattern' ? 0 : Math.min(SEMESTER.weeks - 1, state.week + 1));
+$('oneOff').onchange = (ev) => { state.oneOff = ev.target.checked; render(); };
+$('reoptimize').onclick = () => {
+  const fresh = optimize(state.subjects);
+  for (const c of COMPONENTS) if (state.subjects.has(c.subject)) state.sel[c.key] = fresh[c.key] ?? null;
+  state.mode = 'optimized';
+  render();
+};
+$('themeBtn').onclick = () => {
+  const dark = document.documentElement.classList.toggle('dark');
+  try { localStorage.setItem('pl-theme', dark ? 'dark' : 'light'); } catch (e) {}
+};
+const drawer = $('drawer');
+$('drawerBtn').onclick = () => drawer.classList.remove('hidden');
+$('drawerClose').onclick = $('drawerBackdrop').onclick = () => drawer.classList.add('hidden');
+$('modalBackdrop').onclick = closeModal;
+$('modalCard').addEventListener('click', (ev) => { if (ev.target.closest('#modalClose')) closeModal(); });
+document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') { closeModal(); if (innerWidth < 1280) drawer.classList.add('hidden'); } });
+
+/* Init */
+if (!load()) state.sel = optimize(new Set(Object.keys(SUBJECTS)));
+{ const t = todayInfo(); if (t.day >= 1 && t.day <= 5) state.day = t.day; }
+render();
+</script>
+</body>
+</html>
