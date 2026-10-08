@@ -241,8 +241,11 @@ const ATTENDANCE = {
   HCI: { level: 'mandatory', note: 'Todas las clases son obligatorias (el profesor no pasa lista)' },
   IOT: {
     components: {
-      Lecture: { level: 'optional', note: 'La teoría no es obligatoria' },
-      Laboratory: { level: 'partner', note: 'Obligatorio · cuenta como asistencia si va tu compañero' },
+      Lecture: { level: 'optional', note: 'La teoría no es obligatoria, salvo el examen en la última clase', weeks: { 17: 'Examen final (30 % de la nota)' } },
+      Laboratory: {
+        level: 'partner', note: 'Obligatorio · cuenta como asistencia si va tu compañero. Fechas de evaluación estimadas',
+        weeks: { 8: 'Exercises grade 1 (ejercicios 1–4) · estimado', 17: 'Exercises grade 2 (ejercicios 5–8) · estimado' },
+      },
     },
   },
   TSN: { components: { Laboratory: { level: 'mandatory', note: 'Todos los laboratorios son obligatorios' } } },
@@ -610,8 +613,8 @@ function sessionInfo(e, w) {
 /* ¿Es obligatoria esta clase la semana w? → { level, label } | null */
 function mustAt(e, w) {
   const r = ruleOf(e);
-  if (r.level === 'mandatory' || r.level === 'partner') return { level: r.level, label: r.note };
   if (r.weeks && r.weeks[weekNo(w)]) return { level: 'mandatory', label: r.weeks[weekNo(w)], special: true };
+  if (r.level === 'mandatory' || r.level === 'partner') return { level: r.level, label: r.note };
   return null;
 }
 
