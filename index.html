@@ -830,7 +830,7 @@ function renderMustWeek() {
     <div class="flex flex-wrap gap-1.5">
       ${list.map((o) => {
         const s = SUBJECTS[o.e.subject];
-        return `<button data-ev="${o.e.id}" class="flex items-center gap-1.5 rounded-lg border border-current/20 bg-white/60 px-2 py-1 text-xs transition hover:bg-white dark:bg-slate-900/60 dark:hover:bg-slate-900 ${o.must.special ? 'font-bold' : ''}" style="--c:${s.color}">
+        return `<button data-ev="${o.e.id}" class="flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-white/70 px-2 py-1 text-xs text-slate-700 transition hover:border-amber-500/60 hover:bg-white dark:border-amber-400/25 dark:bg-slate-900/50 dark:text-amber-100 dark:hover:border-amber-400/50 dark:hover:bg-slate-900 ${o.must.special ? 'font-bold' : ''}" style="--c:${s.color}">
           <span class="dot h-2 w-2 rounded-full"></span>${DAYS_SHORT[o.e.day]} ${o.e.start} · ${esc(s.short)} ${TYPES[o.e.type].badge.toLowerCase()}${o.must.level === 'partner' ? ' <span class="opacity-70">(vale compañero)</span>' : ''}
         </button>`;
       }).join('')}
