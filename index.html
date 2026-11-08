@@ -352,6 +352,7 @@ const ASSESSMENTS = [
   // Internet of Things
   { subject: 'IOT', type: 'Laboratory', kind: 'entrega', title: 'Exercise grade 1 · ejercicios 1–4', date: '2026-11-25', estimated: true, weight: '35 %', basis: '"Around end of November": último lab de noviembre' },
   { subject: 'IOT', type: 'Laboratory', kind: 'entrega', title: 'Exercise grade 2 · ejercicios 5–8', date: '2027-01-27', estimated: true, weight: '35 %', basis: 'Última sesión de lab del semestre' },
+  { subject: 'IOT', type: 'Lecture', kind: 'charla', title: 'Charla sobre iOS · si vas te quitan la Task 8', date: '2026-11-09', note: 'Sustituye a la clase de teoría (el lunes sigue horario de miércoles)' },
   { subject: 'IOT', type: 'Lecture', kind: 'examen', title: 'Examen final', date: '2027-01-27', estimated: true, weight: '30 %', basis: '"Last lecture, end of January"' },
   // Telecommunication Systems and Networks
   { subject: 'TSN', type: 'Laboratory', kind: 'entrega', title: 'Trabajo 1 · Łukasz Januszkiewicz', date: '2026-11-20', estimated: true, basis: '4.ª y última clase de lab con este profesor' },
@@ -465,13 +466,14 @@ const EVENTS = [
 
   // ── Internet of Things ──────────────────────────────────────────
   { id: '23733', subject: 'IOT', type: 'Lecture', groups: ['5CS - group 1', '5CS - group 2', '5CS - group 3', '5CS - Erasmus 1', '5CS - Erasmus 2', '5CS - Erasmus 3'], day: 3, start: '14:15', end: '15:45', teachers: ['Dariusz Makowski', 'Piotr Zając'], location: [{ building: 'B18', room: 'AULA A2' }], note: '', weeks: '011111011111000111' },
-  { id: '24077', subject: 'IOT', type: 'Lecture', groups: ['5CS - group 1', '5CS - group 2', '5CS - group 3'], day: 1, start: '14:15', end: '15:45', teachers: ['Dariusz Makowski', 'Piotr Zając'], location: [{ building: 'B18', room: 'AULA A2' }], note: '', weeks: '000000100000000000' },
+  { id: '24077', subject: 'IOT', type: 'Lecture', groups: ['5CS - group 1', '5CS - group 2', '5CS - group 3', '5CS - Erasmus 1', '5CS - Erasmus 2', '5CS - Erasmus 3'], day: 1, start: '14:15', end: '15:45', teachers: ['Dariusz Makowski', 'Piotr Zając'], location: [{ building: 'B18', room: 'AULA A2' }], note: 'Charla sobre iOS (sustituye a la teoría del miércoles)', weeks: '000000100000000000' },
   { id: '24078', subject: 'IOT', type: 'Lecture', groups: ['5CS - group 1', '5CS - group 2', '5CS - group 3'], day: 2, start: '14:15', end: '15:45', teachers: ['Dariusz Makowski', 'Piotr Zając'], location: [{ building: 'B18', room: 'AULA A2' }], note: '', weeks: '000000000000100000' },
   { id: '23735', subject: 'IOT', type: 'Laboratory', groups: ['5CS - group 1'], day: 4, start: '12:15', end: '13:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '111111111111000111' },
   { id: '23734', subject: 'IOT', type: 'Laboratory', groups: ['5CS - group 2'], day: 3, start: '16:15', end: '17:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '011111011111000111' },
   { id: '23736', subject: 'IOT', type: 'Laboratory', groups: ['5CS - group 3'], day: 4, start: '14:15', end: '15:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '111111111111000111' },
   { id: '23737', subject: 'IOT', type: 'Laboratory', groups: ['5CS - Erasmus 1'], day: 4, start: '16:15', end: '17:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '011111111111000111' },
   { id: '23818', subject: 'IOT', type: 'Laboratory', groups: ['5CS - Erasmus 2'], day: 3, start: '18:15', end: '19:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '011111011111000111' },
+  { id: '23818b', subject: 'IOT', type: 'Laboratory', groups: ['5CS - Erasmus 2'], day: 1, start: '18:15', end: '19:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: 'Lun 9 nov: horario de miércoles', weeks: '000000100000000000' },
   { id: '23738', subject: 'IOT', type: 'Laboratory', groups: ['5CS - Erasmus 3'], day: 4, start: '18:15', end: '19:45', teachers: ['Piotr Zając'], location: [{ building: 'B18', room: 'lab.M' }], note: '', weeks: '011111111111000111' },
 
   // ── Telecommunication Systems and Networks ──────────────────────
@@ -487,7 +489,7 @@ const EVENTS = [
   { id: '23520', subject: 'NT', type: 'Laboratory', groups: ['3IT - group 2'], day: 5, start: '10:15', end: '11:45', teachers: ['Marcin Leplawy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '011111111111000111' },
   { id: '23521', subject: 'NT', type: 'Laboratory', groups: ['3IT - group 3'], day: 2, start: '12:30', end: '14:00', teachers: ['Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '011111111111000111' },
   { id: '24565', subject: 'NT', type: 'Laboratory', groups: ['3IT - ERASMUS'], day: 1, start: '17:30', end: '19:00', teachers: ['Piotr Lipiński'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: 'group 1', weeks: '011111011111100111' },
-  { id: '24533', subject: 'NT', type: 'Laboratory', groups: ['3IT - ERASMUS'], day: 1, start: '19:15', end: '20:45', teachers: ['Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: 'group 2', weeks: '011111111111000111' },
+  { id: '24533', subject: 'NT', type: 'Laboratory', groups: ['3IT - ERASMUS'], day: 1, start: '19:15', end: '20:45', teachers: ['Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: 'group 2', weeks: '011111011111000111' },
 
   // ── Artificial Intelligence and Expert Systems ──────────────────
   { id: '23576', subject: 'AI', type: 'Lecture', groups: ['7IT - group 1', '7IT - group 2', '7IT - ERASMUS'], day: 3, start: '15:45', end: '18:00', teachers: ['Krzysztof Lichy'], location: [{ building: 'B19', room: '106' }, { building: 'B19', room: '107' }], note: '', weeks: '011111011110000000' },
@@ -515,7 +517,7 @@ const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', '
 const GRID_START = 8 * 60, GRID_END = 21 * 60, PPM = 1.15; // px por minuto
 const REGULAR_MIN_WEEKS = 3; // menos semanas = sesión puntual
 const STORE = 'pl-erasmus-v2';
-const KINDS = { entrega: 'Entrega', examen: 'Examen', milestone: 'Milestone', defensa: 'Defensa', revision: 'Revisión' };
+const KINDS = { entrega: 'Entrega', examen: 'Examen', milestone: 'Milestone', defensa: 'Defensa', revision: 'Revisión', charla: 'Charla' };
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
